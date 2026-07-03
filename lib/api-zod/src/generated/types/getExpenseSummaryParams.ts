@@ -3,12 +3,12 @@
  * Do not edit manually.
  * Api
  * Money Tracker API
- * OpenAPI spec version: 0.1.0
+ * OpenAPI spec version: 0.2.0
  */
 
 export type GetExpenseSummaryParams = {
 /**
- * Month to summarize (YYYY-MM), defaults to current month
+ * Month (YYYY-MM), defaults to current month
  */
 month?: string;
 };

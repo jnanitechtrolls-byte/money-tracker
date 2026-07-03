@@ -3,7 +3,7 @@
  * Do not edit manually.
  * Api
  * Money Tracker API
- * OpenAPI spec version: 0.1.0
+ * OpenAPI spec version: 0.2.0
  */
 
 export type ListExpensesParams = {
@@ -11,8 +11,9 @@ export type ListExpensesParams = {
  * Filter by month (YYYY-MM)
  */
 month?: string;
-/**
- * Filter by category
- */
 category?: string;
+/**
+ * Filter by type: expense | income
+ */
+type?: string;
 };

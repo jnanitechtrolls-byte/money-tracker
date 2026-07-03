@@ -3,16 +3,17 @@
  * Do not edit manually.
  * Api
  * Money Tracker API
- * OpenAPI spec version: 0.1.0
+ * OpenAPI spec version: 0.2.0
  */
 
 export interface Expense {
   id: number;
   userId: string;
+  /** expense | income */
+  type: string;
   amount: number;
   category: string;
   description: string;
-  /** Calendar date (YYYY-MM-DD) */
   date: string;
   createdAt: string;
 }

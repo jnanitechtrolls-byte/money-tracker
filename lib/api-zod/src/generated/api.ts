@@ -3,13 +3,12 @@
  * Do not edit manually.
  * Api
  * Money Tracker API
- * OpenAPI spec version: 0.1.0
+ * OpenAPI spec version: 0.2.0
  */
 import * as zod from 'zod';
 
 
 /**
- * Returns server health status
  * @summary Health check
  */
 export const HealthCheckResponse = zod.object({
@@ -18,59 +17,64 @@ export const HealthCheckResponse = zod.object({
 
 
 /**
- * @summary List expenses for current user
+ * @summary List transactions for current user
  */
 export const ListExpensesQueryParams = zod.object({
   "month": zod.coerce.string().optional().describe('Filter by month (YYYY-MM)'),
-  "category": zod.coerce.string().optional().describe('Filter by category')
+  "category": zod.coerce.string().optional(),
+  "type": zod.coerce.string().optional().describe('Filter by type: expense | income')
 })
 
 export const ListExpensesResponseItem = zod.object({
   "id": zod.number(),
   "userId": zod.string(),
+  "type": zod.string().describe('expense | income'),
   "amount": zod.number(),
   "category": zod.string(),
   "description": zod.string(),
-  "date": zod.string().describe('Calendar date (YYYY-MM-DD)'),
+  "date": zod.string(),
   "createdAt": zod.string()
 })
 export const ListExpensesResponse = zod.array(ListExpensesResponseItem)
 
 
 /**
- * @summary Create a new expense
+ * @summary Create a new transaction
  */
 
 
 
 export const CreateExpenseBody = zod.object({
+  "type": zod.string().optional().describe('expense | income (default: expense)'),
   "amount": zod.number(),
   "category": zod.string().min(1),
-  "description": zod.string(),
-  "date": zod.string().describe('Calendar date (YYYY-MM-DD)')
+  "description": zod.string().optional(),
+  "date": zod.string()
 })
 
 export const CreateExpenseResponse = zod.object({
   "id": zod.number(),
   "userId": zod.string(),
+  "type": zod.string().describe('expense | income'),
   "amount": zod.number(),
   "category": zod.string(),
   "description": zod.string(),
-  "date": zod.string().describe('Calendar date (YYYY-MM-DD)'),
+  "date": zod.string(),
   "createdAt": zod.string()
 })
 
 
 /**
- * @summary Get expense summary and analytics for current user
+ * @summary Get monthly statistics and category breakdown
  */
 export const GetExpenseSummaryQueryParams = zod.object({
-  "month": zod.coerce.string().optional().describe('Month to summarize (YYYY-MM), defaults to current month')
+  "month": zod.coerce.string().optional().describe('Month (YYYY-MM), defaults to current month')
 })
 
 export const GetExpenseSummaryResponse = zod.object({
-  "totalThisMonth": zod.number(),
-  "totalAllTime": zod.number(),
+  "totalExpenses": zod.number(),
+  "totalIncome": zod.number(),
+  "balance": zod.number(),
   "byCategory": zod.array(zod.object({
   "category": zod.string(),
   "total": zod.number()
@@ -78,28 +82,33 @@ export const GetExpenseSummaryResponse = zod.object({
   "recentExpenses": zod.array(zod.object({
   "id": zod.number(),
   "userId": zod.string(),
+  "type": zod.string().describe('expense | income'),
   "amount": zod.number(),
   "category": zod.string(),
   "description": zod.string(),
-  "date": zod.string().describe('Calendar date (YYYY-MM-DD)'),
+  "date": zod.string(),
   "createdAt": zod.string()
+})),
+  "monthlyStats": zod.array(zod.object({
+  "month": zod.string(),
+  "expenses": zod.number(),
+  "income": zod.number(),
+  "balance": zod.number()
 }))
 })
 
 
 /**
- * @summary Update an expense
+ * @summary Update a transaction
  */
 export const UpdateExpenseParams = zod.object({
   "id": zod.coerce.number()
 })
 
-
-
-
 export const UpdateExpenseBody = zod.object({
+  "type": zod.string().optional(),
   "amount": zod.number().optional(),
-  "category": zod.string().min(1).optional(),
+  "category": zod.string().optional(),
   "description": zod.string().optional(),
   "date": zod.string().optional()
 })
@@ -107,16 +116,17 @@ export const UpdateExpenseBody = zod.object({
 export const UpdateExpenseResponse = zod.object({
   "id": zod.number(),
   "userId": zod.string(),
+  "type": zod.string().describe('expense | income'),
   "amount": zod.number(),
   "category": zod.string(),
   "description": zod.string(),
-  "date": zod.string().describe('Calendar date (YYYY-MM-DD)'),
+  "date": zod.string(),
   "createdAt": zod.string()
 })
 
 
 /**
- * @summary Delete an expense
+ * @summary Delete a transaction
  */
 export const DeleteExpenseParams = zod.object({
   "id": zod.coerce.number()

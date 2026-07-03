@@ -56,95 +56,54 @@
 }
 
 :root {
-  --background: 40 33% 98%; /* Warm off-white */
-  --foreground: 30 20% 20%; /* Deep brown-grey */
+  /* Always dark – matches the Money Tracker reference design */
+  --background: 0 0% 10%;
+  --foreground: 0 0% 95%;
 
-  --card: 40 33% 98%;
-  --card-foreground: 30 20% 20%;
-  --card-border: 40 15% 90%;
+  --card: 0 0% 13%;
+  --card-foreground: 0 0% 95%;
+  --card-border: 0 0% 20%;
 
-  --popover: 40 33% 98%;
-  --popover-foreground: 30 20% 20%;
-  --popover-border: 40 15% 90%;
+  --popover: 0 0% 13%;
+  --popover-foreground: 0 0% 95%;
+  --popover-border: 0 0% 20%;
 
-  --primary: 158 40% 35%; /* Earthy Forest Green */
-  --primary-foreground: 40 33% 98%;
-  --primary-border: 158 40% 30%;
+  /* Yellow accent */
+  --primary: 48 100% 52%;
+  --primary-foreground: 0 0% 8%;
+  --primary-border: 48 100% 42%;
 
-  --secondary: 35 25% 90%; /* Warm sand */
-  --secondary-foreground: 30 20% 20%;
-  --secondary-border: 35 20% 85%;
+  --secondary: 0 0% 18%;
+  --secondary-foreground: 0 0% 85%;
+  --secondary-border: 0 0% 24%;
 
-  --muted: 40 15% 92%;
-  --muted-foreground: 30 15% 45%;
-  --muted-border: 40 15% 88%;
+  --muted: 0 0% 16%;
+  --muted-foreground: 0 0% 55%;
+  --muted-border: 0 0% 22%;
 
-  --accent: 28 73% 53%; /* Terracotta/Orange accent */
-  --accent-foreground: 40 33% 98%;
-  --accent-border: 28 73% 45%;
+  --accent: 48 100% 52%;
+  --accent-foreground: 0 0% 8%;
+  --accent-border: 48 100% 42%;
 
-  --destructive: 0 65% 50%;
-  --destructive-foreground: 40 33% 98%;
-  --destructive-border: 0 65% 40%;
+  --destructive: 0 70% 50%;
+  --destructive-foreground: 0 0% 95%;
+  --destructive-border: 0 70% 40%;
 
-  --border: 40 15% 85%;
-  --input: 40 15% 90%;
-  --ring: 158 40% 35%;
+  --border: 0 0% 20%;
+  --input: 0 0% 18%;
+  --ring: 48 100% 52%;
 
-  --chart-1: 158 40% 35%; /* Primary green */
-  --chart-2: 28 73% 53%; /* Accent orange */
-  --chart-3: 195 45% 45%; /* Muted teal */
-  --chart-4: 45 80% 55%; /* Warm yellow */
-  --chart-5: 320 20% 60%; /* Soft slate blue */
+  --chart-1: 48 100% 52%;
+  --chart-2: 158 60% 45%;
+  --chart-3: 210 80% 55%;
+  --chart-4: 280 60% 55%;
+  --chart-5: 0 70% 55%;
 
-  --app-font-sans: 'Geist', 'Inter', sans-serif;
+  --app-font-sans: 'Inter', 'Geist', sans-serif;
   --app-font-serif: Georgia, serif;
   --app-font-mono: Menlo, monospace;
-  
+
   --radius: 0.75rem;
-}
-
-.dark {
-  --background: 30 10% 12%; 
-  --foreground: 40 20% 95%;
-
-  --card: 30 10% 14%;
-  --card-foreground: 40 20% 95%;
-  --card-border: 30 10% 20%;
-
-  --popover: 30 10% 14%;
-  --popover-foreground: 40 20% 95%;
-  --popover-border: 30 10% 20%;
-
-  --primary: 158 35% 45%;
-  --primary-foreground: 30 10% 12%;
-  --primary-border: 158 35% 40%;
-
-  --secondary: 30 10% 20%;
-  --secondary-foreground: 40 20% 95%;
-  --secondary-border: 30 10% 25%;
-
-  --muted: 30 10% 18%;
-  --muted-foreground: 40 15% 70%;
-  --muted-border: 30 10% 22%;
-
-  --accent: 28 65% 50%;
-  --accent-foreground: 40 20% 95%;
-  --accent-border: 28 65% 40%;
-
-  --destructive: 0 55% 45%;
-  --destructive-foreground: 40 20% 95%;
-  --destructive-border: 0 55% 40%;
-
-  --border: 30 10% 22%;
-  --input: 30 10% 20%;
-  --ring: 158 35% 45%;
-
-  --chart-1: 158 35% 45%;
-  --chart-2: 28 65% 50%;
-  --chart-3: 195 40% 50%;
-  --chart-4: 45 70% 50%;
-  --chart-5: 320 25% 65%;
 }
 
 @layer base {
@@ -155,4 +114,11 @@
   body {
     @apply font-sans antialiased bg-background text-foreground;
   }
+
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: hsl(0 0% 30%); border-radius: 2px; }
 }

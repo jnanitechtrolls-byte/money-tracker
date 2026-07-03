@@ -3,7 +3,7 @@
  * Do not edit manually.
  * Api
  * Money Tracker API
- * OpenAPI spec version: 0.1.0
+ * OpenAPI spec version: 0.2.0
  */
 export interface HealthStatus {
   status: string;
@@ -12,26 +12,28 @@ export interface HealthStatus {
 export interface Expense {
   id: number;
   userId: string;
+  /** expense | income */
+  type: string;
   amount: number;
   category: string;
   description: string;
-  /** Calendar date (YYYY-MM-DD) */
   date: string;
   createdAt: string;
 }
 
 export interface ExpenseInput {
+  /** expense | income (default: expense) */
+  type?: string;
   amount: number;
   /** @minLength 1 */
   category: string;
-  description: string;
-  /** Calendar date (YYYY-MM-DD) */
+  description?: string;
   date: string;
 }
 
 export interface ExpenseUpdate {
+  type?: string;
   amount?: number;
-  /** @minLength 1 */
   category?: string;
   description?: string;
   date?: string;
@@ -42,11 +44,20 @@ export interface CategoryTotal {
   total: number;
 }
 
+export interface MonthlyStat {
+  month: string;
+  expenses: number;
+  income: number;
+  balance: number;
+}
+
 export interface ExpenseSummary {
-  totalThisMonth: number;
-  totalAllTime: number;
+  totalExpenses: number;
+  totalIncome: number;
+  balance: number;
   byCategory: CategoryTotal[];
   recentExpenses: Expense[];
+  monthlyStats: MonthlyStat[];
 }
 
 export type ListExpensesParams = {
@@ -54,15 +65,16 @@ export type ListExpensesParams = {
  * Filter by month (YYYY-MM)
  */
 month?: string;
-/**
- * Filter by category
- */
 category?: string;
+/**
+ * Filter by type: expense | income
+ */
+type?: string;
 };
 
 export type GetExpenseSummaryParams = {
 /**
- * Month to summarize (YYYY-MM), defaults to current month
+ * Month (YYYY-MM), defaults to current month
  */
 month?: string;
 };

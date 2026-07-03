@@ -3,14 +3,17 @@
  * Do not edit manually.
  * Api
  * Money Tracker API
- * OpenAPI spec version: 0.1.0
+ * OpenAPI spec version: 0.2.0
  */
 import type { CategoryTotal } from './categoryTotal';
 import type { Expense } from './expense';
+import type { MonthlyStat } from './monthlyStat';
 
 export interface ExpenseSummary {
-  totalThisMonth: number;
-  totalAllTime: number;
+  totalExpenses: number;
+  totalIncome: number;
+  balance: number;
   byCategory: CategoryTotal[];
   recentExpenses: Expense[];
+  monthlyStats: MonthlyStat[];
 }

@@ -3,7 +3,7 @@
  * Do not edit manually.
  * Api
  * Money Tracker API
- * OpenAPI spec version: 0.1.0
+ * OpenAPI spec version: 0.2.0
  */
 import {
   useMutation,
@@ -65,7 +65,6 @@ export const getHealthCheckUrl = () => {
 }
 
 /**
- * Returns server health status
  * @summary Health check
  */
 export const healthCheck = async ( options?: RequestInit): Promise<HealthStatus> => {
@@ -150,7 +149,7 @@ export const getListExpensesUrl = (params?: ListExpensesParams,) => {
 }
 
 /**
- * @summary List expenses for current user
+ * @summary List transactions for current user
  */
 export const listExpenses = async (params?: ListExpensesParams, options?: RequestInit): Promise<Expense[]> => {
 
@@ -197,7 +196,7 @@ export type ListExpensesQueryError = ErrorType<void>
 
 
 /**
- * @summary List expenses for current user
+ * @summary List transactions for current user
  */
 
 export function useListExpenses<TData = Awaited<ReturnType<typeof listExpenses>>, TError = ErrorType<void>>(
@@ -227,7 +226,7 @@ export const getCreateExpenseUrl = () => {
 }
 
 /**
- * @summary Create a new expense
+ * @summary Create a new transaction
  */
 export const createExpense = async (expenseInput: ExpenseInput, options?: RequestInit): Promise<Expense> => {
 
@@ -275,7 +274,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
     export type CreateExpenseMutationError = ErrorType<void>
 
     /**
- * @summary Create a new expense
+ * @summary Create a new transaction
  */
 export const useCreateExpense = <TError = ErrorType<void>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createExpense>>, TError,{data: BodyType<ExpenseInput>}, TContext>, request?: SecondParameter<typeof customFetch>}
@@ -304,7 +303,7 @@ export const getGetExpenseSummaryUrl = (params?: GetExpenseSummaryParams,) => {
 }
 
 /**
- * @summary Get expense summary and analytics for current user
+ * @summary Get monthly statistics and category breakdown
  */
 export const getExpenseSummary = async (params?: GetExpenseSummaryParams, options?: RequestInit): Promise<ExpenseSummary> => {
 
@@ -351,7 +350,7 @@ export type GetExpenseSummaryQueryError = ErrorType<void>
 
 
 /**
- * @summary Get expense summary and analytics for current user
+ * @summary Get monthly statistics and category breakdown
  */
 
 export function useGetExpenseSummary<TData = Awaited<ReturnType<typeof getExpenseSummary>>, TError = ErrorType<void>>(
@@ -381,7 +380,7 @@ export const getUpdateExpenseUrl = (id: number,) => {
 }
 
 /**
- * @summary Update an expense
+ * @summary Update a transaction
  */
 export const updateExpense = async (id: number,
     expenseUpdate: ExpenseUpdate, options?: RequestInit): Promise<Expense> => {
@@ -430,7 +429,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
     export type UpdateExpenseMutationError = ErrorType<void>
 
     /**
- * @summary Update an expense
+ * @summary Update a transaction
  */
 export const useUpdateExpense = <TError = ErrorType<void>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateExpense>>, TError,{id: number;data: BodyType<ExpenseUpdate>}, TContext>, request?: SecondParameter<typeof customFetch>}
@@ -452,7 +451,7 @@ export const getDeleteExpenseUrl = (id: number,) => {
 }
 
 /**
- * @summary Delete an expense
+ * @summary Delete a transaction
  */
 export const deleteExpense = async (id: number, options?: RequestInit): Promise<void> => {
 
@@ -500,7 +499,7 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
     export type DeleteExpenseMutationError = ErrorType<void>
 
     /**
- * @summary Delete an expense
+ * @summary Delete a transaction
  */
 export const useDeleteExpense = <TError = ErrorType<void>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deleteExpense>>, TError,{id: number}, TContext>, request?: SecondParameter<typeof customFetch>}

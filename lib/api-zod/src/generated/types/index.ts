@@ -3,7 +3,7 @@
  * Do not edit manually.
  * Api
  * Money Tracker API
- * OpenAPI spec version: 0.1.0
+ * OpenAPI spec version: 0.2.0
  */
 
 export * from './categoryTotal';
@@ -14,3 +14,4 @@ export * from './expenseUpdate';
 export * from './getExpenseSummaryParams';
 export * from './healthStatus';
 export * from './listExpensesParams';
+export * from './monthlyStat';
