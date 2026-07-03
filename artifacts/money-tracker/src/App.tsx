@@ -11,6 +11,7 @@ import RecordsPage from "./pages/records";
 import ChartsPage from "./pages/charts";
 import ReportsPage from "./pages/reports";
 import MePage from "./pages/me";
+import SettingsPage from "./pages/settings";
 import BottomNav from "./components/bottom-nav";
 import AddTransactionModal from "./components/add-transaction-modal";
 
@@ -91,7 +92,7 @@ function HomeRedirect() {
   );
 }
 
-/** Wraps all authenticated pages with the bottom nav + add modal */
+/** Main app layout with bottom nav + add modal */
 function AppLayout({ children }: { children: React.ReactNode }) {
   const [addOpen, setAddOpen] = useState(false);
   return (
@@ -103,11 +104,21 @@ function AppLayout({ children }: { children: React.ReactNode }) {
   );
 }
 
-function AuthedRoute({ component: Comp }: { component: React.ComponentType }) {
+/** Full-screen layout (no bottom nav) for sub-pages like Settings */
+function FullLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex flex-col h-[100dvh] overflow-hidden bg-[#111]">
+      <div className="flex-1 overflow-hidden">{children}</div>
+    </div>
+  );
+}
+
+function AuthedRoute({ component: Comp, fullScreen }: { component: React.ComponentType; fullScreen?: boolean }) {
+  const Layout = fullScreen ? FullLayout : AppLayout;
   return (
     <>
       <Show when="signed-in">
-        <AppLayout><Comp /></AppLayout>
+        <Layout><Comp /></Layout>
       </Show>
       <Show when="signed-out"><Redirect to="/" /></Show>
     </>
@@ -137,7 +148,7 @@ function ClerkProviderWithRoutes() {
           <Route path="/charts" component={() => <AuthedRoute component={ChartsPage} />} />
           <Route path="/reports" component={() => <AuthedRoute component={ReportsPage} />} />
           <Route path="/me" component={() => <AuthedRoute component={MePage} />} />
-          {/* Legacy redirects */}
+          <Route path="/settings" component={() => <AuthedRoute component={SettingsPage} fullScreen />} />
           <Route path="/dashboard" component={() => <Redirect to="/records" />} />
           <Route path="/expenses" component={() => <Redirect to="/records" />} />
         </Switch>
