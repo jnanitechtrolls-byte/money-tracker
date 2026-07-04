@@ -33,6 +33,11 @@ app.use(
   }),
 );
 
+// Health check BEFORE any middleware — keeps the startup probe fast in production
+app.get("/api/healthz", (_req, res) => {
+  res.json({ status: "ok" });
+});
+
 app.use(CLERK_PROXY_PATH, clerkProxyMiddleware());
 
 app.use(cors({ credentials: true, origin: true }));
