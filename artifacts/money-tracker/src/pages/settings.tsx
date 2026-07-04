@@ -7,58 +7,9 @@ type LinkItem = { icon: string; label: string; vip?: boolean };
 const SETTINGS_SECTIONS: Array<{ title?: string; items: Array<{ icon: string; label: string; vip?: boolean; toggle?: string }> }> = [
   {
     items: [
-      { icon: "👤", label: "Profile" },
-      { icon: "🔗", label: "Data Sharing" },
-      { icon: "🏷️", label: "Category settings" },
-      { icon: "💱", label: "Default currency" },
-      { icon: "⏰", label: "Reminder" },
-      { icon: "🔁", label: "Regular Payments" },
-      { icon: "📅", label: "Monthly Start Date", vip: true },
-    ],
-  },
-  {
-    items: [
-      { icon: "🎨", label: "Themes" },
-      { icon: "🔤", label: "Font Size" },
-      { icon: "🖥️", label: "Home page settings" },
-    ],
-  },
-  {
-    items: [
-      { icon: "📒", label: "My Cash Books" },
-      { icon: "🏦", label: "Accounts" },
-      { icon: "💰", label: "Budget" },
-      { icon: "📊", label: "Export Data" },
-      { icon: "🔒", label: "Password", vip: true },
-    ],
-  },
-  {
-    items: [
-      { icon: "🔔", label: "Notification Shortcut", toggle: "notif" },
       { icon: "🎵", label: "Sound Effect", toggle: "sound" },
       { icon: "9️⃣", label: "Thousands separator", toggle: "thousands" },
-      { icon: "🔢", label: "Number display format" },
-      { icon: "🧮", label: "Calculator" },
-      { icon: "📆", label: "Calendar" },
-      { icon: "🏷️", label: "Icon" },
-      { icon: "🤖", label: "AI Input Toolbar", toggle: "ai" },
-    ],
-  },
-  {
-    items: [
-      { icon: "🗑️", label: "Delete all data" },
-      { icon: "☁️", label: "Automatically backed up data" },
       { icon: "🌐", label: "Language" },
-      { icon: "🔌", label: "API (Developer Tools)", vip: true },
-    ],
-  },
-  {
-    items: [
-      { icon: "📄", label: "Terms of Use" },
-      { icon: "🛡️", label: "Privacy Policy" },
-      { icon: "ℹ️", label: "About us" },
-      { icon: "💬", label: "Feedback" },
-      { icon: "🧹", label: "Clear cache" },
     ],
   },
 ];

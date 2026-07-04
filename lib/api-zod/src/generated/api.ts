@@ -32,6 +32,7 @@ export const ListExpensesResponseItem = zod.object({
   "amount": zod.number(),
   "category": zod.string(),
   "description": zod.string(),
+  "authorName": zod.string().optional(),
   "date": zod.string(),
   "createdAt": zod.string()
 })
@@ -49,6 +50,7 @@ export const CreateExpenseBody = zod.object({
   "amount": zod.number(),
   "category": zod.string().min(1),
   "description": zod.string().optional(),
+  "authorName": zod.string().optional(),
   "date": zod.string()
 })
 
@@ -59,6 +61,7 @@ export const CreateExpenseResponse = zod.object({
   "amount": zod.number(),
   "category": zod.string(),
   "description": zod.string(),
+  "authorName": zod.string().optional(),
   "date": zod.string(),
   "createdAt": zod.string()
 })
@@ -86,6 +89,7 @@ export const GetExpenseSummaryResponse = zod.object({
   "amount": zod.number(),
   "category": zod.string(),
   "description": zod.string(),
+  "authorName": zod.string().optional(),
   "date": zod.string(),
   "createdAt": zod.string()
 })),
@@ -120,6 +124,7 @@ export const UpdateExpenseResponse = zod.object({
   "amount": zod.number(),
   "category": zod.string(),
   "description": zod.string(),
+  "authorName": zod.string().optional(),
   "date": zod.string(),
   "createdAt": zod.string()
 })

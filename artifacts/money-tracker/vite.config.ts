@@ -10,6 +10,7 @@ const port = rawPort ? Number(rawPort) : 3000;
 const basePath = process.env.BASE_PATH ?? "/";
 
 export default defineConfig({
+  envDir: path.resolve(import.meta.dirname, "..", ".."),
   base: basePath,
   plugins: [
     react(),
@@ -46,8 +47,17 @@ export default defineConfig({
     strictPort: true,
     host: "0.0.0.0",
     allowedHosts: true,
+    proxy: {
+      "/api": {
+        target: "http://localhost:5001",
+        changeOrigin: true,
+      },
+    },
     fs: {
       strict: true,
+    },
+    hmr: {
+      overlay: false,
     },
   },
   preview: {

@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { useListExpenses } from "@workspace/api-client-react";
+import { useListExpenses, useDeleteExpense } from "@workspace/api-client-react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useUser } from "@clerk/react";
 import { getCategoryInfo } from "@/lib/categories";
 import CalendarModal from "@/components/calendar-modal";
 import TransactionDetailsModal from "@/components/transaction-details-modal";
@@ -28,11 +30,15 @@ type Expense = {
   amount: number;
   category: string;
   description: string;
+  authorName?: string;
+  userId: string;
   date: string;
   createdAt: string;
 };
 
 export default function RecordsPage() {
+  const { user } = useUser();
+  const queryClient = useQueryClient();
   const now = new Date();
   const [month, setMonth] = useState(`${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`);
   const [showMonthPicker, setShowMonthPicker] = useState(false);
@@ -40,7 +46,16 @@ export default function RecordsPage() {
   const [showDrawer, setShowDrawer] = useState(false);
   const [filterDate, setFilterDate] = useState<string | null>(null);
   const [filterType, setFilterType] = useState<FilterType>("all");
-  const [selectedExpense, setSelectedExpense] = useState<Expense | null>(null);
+  const [selectedExpense, setSelectedExpense] = useState<{ expense: Expense; mode: "view" | "edit" } | null>(null);
+
+  const deleteExpense = useDeleteExpense({
+    mutation: {
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["/api/expenses"] });
+        queryClient.invalidateQueries({ queryKey: ["/api/expenses/summary"] });
+      },
+    },
+  });
 
   const { data: allExpenses = [], isLoading } = useListExpenses({ month });
 
@@ -229,23 +244,54 @@ export default function RecordsPage() {
               </div>
               {items.map((expense) => {
                 const cat = getCategoryInfo(expense.category, expense.type);
+                const isOwner = user?.id === expense.userId;
                 return (
-                  <button
-                    key={expense.id}
-                    onClick={() => setSelectedExpense(expense)}
-                    className="w-full flex items-center gap-3 px-4 py-3 border-b border-[#222] active:bg-[#222] transition-colors text-left"
-                  >
-                    <div className="w-10 h-10 rounded-full flex items-center justify-center text-lg shrink-0" style={{ backgroundColor: cat.color + "33" }}>
-                      {cat.emoji}
+                  <div key={expense.id} className="w-full flex items-center gap-2 px-4 py-3 border-b border-[#222] transition-colors text-left group active:bg-[#222]">
+                    <div 
+                      className="flex-1 flex items-center gap-3 min-w-0" 
+                      onClick={() => setSelectedExpense({ expense, mode: "view" })}
+                    >
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center text-lg shrink-0" style={{ backgroundColor: cat.color + "33" }}>
+                        {cat.emoji}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-white text-sm font-medium truncate">
+                          {expense.description || expense.category}
+                        </p>
+                        <p className="text-muted-foreground text-[11px] truncate mt-0.5">
+                          {expense.category} {expense.authorName ? `• ${expense.authorName}` : ""}
+                        </p>
+                      </div>
+                      <span className={`font-semibold text-sm shrink-0 pr-1 ${expense.type === "income" ? "text-green-400" : "text-red-400"}`}>
+                        {expense.type === "income" ? "+" : "-"}{expense.amount.toFixed(0)}
+                      </span>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-white text-sm font-medium truncate">{expense.description || expense.category}</p>
-                      <p className="text-muted-foreground text-xs">{expense.category}</p>
-                    </div>
-                    <span className={`font-semibold text-sm shrink-0 ${expense.type === "income" ? "text-green-400" : "text-red-400"}`}>
-                      {expense.type === "income" ? "+" : "-"}{expense.amount.toFixed(0)}
-                    </span>
-                  </button>
+
+                    {isOwner && (
+                      <div className="flex items-center gap-1 shrink-0">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedExpense({ expense, mode: "edit" });
+                          }}
+                          className="p-1.5 text-white/50 hover:text-white bg-[#222] rounded-md transition-colors"
+                        >
+                          ✏️
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            if (confirm("Delete this transaction?")) {
+                              deleteExpense.mutate({ id: expense.id });
+                            }
+                          }}
+                          className="p-1.5 text-white/50 hover:text-red-400 bg-[#222] rounded-md transition-colors"
+                        >
+                          🗑️
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 );
               })}
             </div>
@@ -263,7 +309,8 @@ export default function RecordsPage() {
       />
 
       <TransactionDetailsModal
-        expense={selectedExpense}
+        expense={selectedExpense?.expense || null}
+        initialMode={selectedExpense?.mode || "view"}
         onClose={() => setSelectedExpense(null)}
       />
     </div>

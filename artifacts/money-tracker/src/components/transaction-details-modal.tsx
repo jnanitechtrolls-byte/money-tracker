@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUpdateExpense, useDeleteExpense } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { useUser } from "@clerk/react";
 import { EXPENSE_CATEGORIES, INCOME_CATEGORIES, getCategoryInfo } from "@/lib/categories";
 
 type Expense = {
@@ -9,12 +10,15 @@ type Expense = {
   amount: number;
   category: string;
   description: string;
+  authorName?: string;
+  userId: string;
   date: string;
   createdAt: string;
 };
 
 type Props = {
   expense: Expense | null;
+  initialMode?: "view" | "edit";
   onClose: () => void;
 };
 
@@ -32,8 +36,8 @@ function formatCreatedAt(isoStr: string) {
   return `Add ${date} ${time}`;
 }
 
-export default function TransactionDetailsModal({ expense, onClose }: Props) {
-  const [mode, setMode] = useState<"view" | "edit">("view");
+export default function TransactionDetailsModal({ expense, initialMode = "view", onClose }: Props) {
+  const [mode, setMode] = useState<"view" | "edit">(initialMode);
   const [editType, setEditType] = useState<"expense" | "income">("expense");
   const [editCategory, setEditCategory] = useState<string>("");
   const [editAmount, setEditAmount] = useState("");
@@ -41,6 +45,7 @@ export default function TransactionDetailsModal({ expense, onClose }: Props) {
   const [editDate, setEditDate] = useState("");
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
+  const { user } = useUser();
   const queryClient = useQueryClient();
 
   const updateExpense = useUpdateExpense({
@@ -62,6 +67,19 @@ export default function TransactionDetailsModal({ expense, onClose }: Props) {
       },
     },
   });
+
+  useEffect(() => {
+    if (expense && initialMode === "edit") {
+      setEditType(expense.type as "expense" | "income");
+      setEditCategory(expense.category);
+      setEditAmount(String(expense.amount));
+      setEditDescription(expense.description);
+      setEditDate(expense.date);
+      setMode("edit");
+    } else {
+      setMode(initialMode);
+    }
+  }, [initialMode, expense]);
 
   if (!expense) return null;
 
@@ -270,20 +288,22 @@ export default function TransactionDetailsModal({ expense, onClose }: Props) {
       </div>
 
       {/* Bottom actions */}
-      <div className="flex border-t border-[#2a2a2a]">
-        <button
-          onClick={openEdit}
-          className="flex-1 py-5 text-white font-semibold text-base active:bg-[#222] transition-colors border-r border-[#2a2a2a]"
-        >
-          Edit
-        </button>
-        <button
-          onClick={() => setShowDeleteConfirm(true)}
-          className="flex-1 py-5 text-red-400 font-semibold text-base active:bg-[#222] transition-colors"
-        >
-          Delete
-        </button>
-      </div>
+      {user?.id === expense.userId && (
+        <div className="flex border-t border-[#2a2a2a]">
+          <button
+            onClick={openEdit}
+            className="flex-1 py-5 text-white font-semibold text-base active:bg-[#222] transition-colors border-r border-[#2a2a2a]"
+          >
+            Edit
+          </button>
+          <button
+            onClick={() => setShowDeleteConfirm(true)}
+            className="flex-1 py-5 text-red-400 font-semibold text-base active:bg-[#222] transition-colors"
+          >
+            Delete
+          </button>
+        </div>
+      )}
     </div>
   );
 }

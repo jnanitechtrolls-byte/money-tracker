@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useCreateExpense } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
+import { useUser } from "@clerk/react";
 import { EXPENSE_CATEGORIES, INCOME_CATEGORIES } from "@/lib/categories";
 
 type TabType = "expense" | "income" | "transfer";
@@ -17,6 +18,7 @@ export default function AddTransactionModal({ open, onClose }: Props) {
   const [description, setDescription] = useState("");
   const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
 
+  const { user } = useUser();
   const queryClient = useQueryClient();
   const createExpense = useCreateExpense({
     mutation: {
@@ -52,12 +54,16 @@ export default function AddTransactionModal({ open, onClose }: Props) {
   function handleSave() {
     if (tab === "transfer") return; // transfer requires accounts
     if (!selectedCategory || !amount || parseFloat(amount) <= 0) return;
+    
+    const authorName = user?.fullName || user?.primaryEmailAddress?.emailAddress || "Family Member";
+
     createExpense.mutate({
       data: {
         type: tab as "expense" | "income",
         amount: parseFloat(amount),
         category: selectedCategory,
         description,
+        authorName,
         date,
       },
     });

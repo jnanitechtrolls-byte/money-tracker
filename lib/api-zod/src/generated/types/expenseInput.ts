@@ -12,5 +12,6 @@ export interface ExpenseInput {
   /** @minLength 1 */
   category: string;
   description?: string;
+  authorName?: string;
   date: string;
 }

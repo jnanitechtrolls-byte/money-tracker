@@ -32,6 +32,7 @@ function toExpenseJSON(e: typeof expensesTable.$inferSelect) {
     amount: parseFloat(e.amount),
     category: e.category,
     description: e.description,
+    authorName: e.authorName,
     date: e.date,
     createdAt: e.createdAt.toISOString(),
   };
@@ -55,7 +56,6 @@ router.get("/expenses/summary", requireAuth, async (req: any, res): Promise<void
   const allRows = await db
     .select()
     .from(expensesTable)
-    .where(eq(expensesTable.userId, userId))
     .orderBy(desc(expensesTable.date));
 
   const thisMonthRows = allRows.filter((e) => e.date >= monthStart && e.date < monthEnd);
@@ -123,7 +123,6 @@ router.get("/expenses", requireAuth, async (req: any, res): Promise<void> => {
   let rows = await db
     .select()
     .from(expensesTable)
-    .where(eq(expensesTable.userId, userId))
     .orderBy(desc(expensesTable.date));
 
   if (parsed.success && parsed.data.month) {
@@ -161,6 +160,7 @@ router.post("/expenses", requireAuth, async (req: any, res): Promise<void> => {
       amount: String(parsed.data.amount),
       category: parsed.data.category,
       description: parsed.data.description || "",
+      authorName: (parsed.data as any).authorName || "",
       date: parsed.data.date,
     })
     .returning();

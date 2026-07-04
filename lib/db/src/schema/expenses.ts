@@ -9,6 +9,7 @@ export const expensesTable = pgTable("expenses", {
   amount: numeric("amount", { precision: 12, scale: 2 }).notNull(),
   category: text("category").notNull(),
   description: text("description").notNull().default(""),
+  authorName: text("author_name").notNull().default(""),
   date: date("date", { mode: "string" }).notNull(),
   createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
 });

@@ -13,6 +13,7 @@ export interface Expense {
   amount: number;
   category: string;
   description: string;
+  authorName?: string;
   date: string;
   createdAt: string;
 }
