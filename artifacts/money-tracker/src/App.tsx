@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ClerkProvider, SignIn, SignUp, Show, useClerk } from '@clerk/react';
 
-import { shadcn } from '@clerk/themes';
+import { dark } from '@clerk/themes';
 import { Switch, Route, useLocation, Redirect, Router as WouterRouter } from 'wouter';
 import { QueryClient, QueryClientProvider, useQueryClient } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -32,17 +32,17 @@ if (!clerkPubKey) {
 }
 
 const clerkAppearance = {
-  theme: shadcn,
-  cssLayerName: "clerk",
+  baseTheme: dark,
   variables: {
     colorPrimary: "hsl(48 100% 52%)",
-    colorForeground: "hsl(0 0% 95%)",
-    colorBackground: "hsl(0 0% 13%)",
-    colorInputBackground: "hsl(0 0% 18%)",
-    colorInputText: "hsl(0 0% 95%)",
+    colorBackground: "#1a1a1a",
+    colorInputBackground: "#2a2a2a",
     fontFamily: "'Inter', sans-serif",
     borderRadius: "0.75rem",
   },
+  elements: {
+    card: "bg-[#1a1a1a] shadow-xl",
+  }
 };
 
 function ClerkQueryClientCacheInvalidator() {
