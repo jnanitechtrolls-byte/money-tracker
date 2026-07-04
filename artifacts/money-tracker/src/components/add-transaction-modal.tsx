@@ -27,6 +27,9 @@ export default function AddTransactionModal({ open, onClose }: Props) {
         queryClient.invalidateQueries({ queryKey: ["/api/expenses/summary"] });
         handleClose();
       },
+      onError: (err: any) => {
+        alert("Failed to add transaction: " + (err?.response?.data?.error || err.message));
+      },
     },
   });
 
