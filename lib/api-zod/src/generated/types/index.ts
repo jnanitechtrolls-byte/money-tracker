@@ -3,9 +3,11 @@
  * Do not edit manually.
  * Api
  * Money Tracker API
- * OpenAPI spec version: 0.2.0
+ * OpenAPI spec version: 0.3.0
  */
 
+export * from './account';
+export * from './accountInput';
 export * from './categoryTotal';
 export * from './expense';
 export * from './expenseInput';

@@ -3,7 +3,7 @@
  * Do not edit manually.
  * Api
  * Money Tracker API
- * OpenAPI spec version: 0.2.0
+ * OpenAPI spec version: 0.3.0
  */
 export interface HealthStatus {
   status: string;
@@ -12,7 +12,6 @@ export interface HealthStatus {
 export interface Expense {
   id: number;
   userId: string;
-  /** expense | income */
   type: string;
   amount: number;
   category: string;
@@ -22,7 +21,6 @@ export interface Expense {
 }
 
 export interface ExpenseInput {
-  /** expense | income (default: expense) */
   type?: string;
   amount: number;
   /** @minLength 1 */
@@ -58,6 +56,28 @@ export interface ExpenseSummary {
   byCategory: CategoryTotal[];
   recentExpenses: Expense[];
   monthlyStats: MonthlyStat[];
+}
+
+export interface Account {
+  id: number;
+  userId: string;
+  name: string;
+  type: string;
+  currency: string;
+  amount: number;
+  icon: string;
+  includeInTotal: boolean;
+  createdAt: string;
+}
+
+export interface AccountInput {
+  /** @minLength 1 */
+  name: string;
+  type?: string;
+  currency?: string;
+  amount?: number;
+  icon?: string;
+  includeInTotal?: boolean;
 }
 
 export type ListExpensesParams = {

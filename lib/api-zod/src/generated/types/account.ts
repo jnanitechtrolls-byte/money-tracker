@@ -6,13 +6,14 @@
  * OpenAPI spec version: 0.3.0
  */
 
-export interface Expense {
+export interface Account {
   id: number;
   userId: string;
+  name: string;
   type: string;
+  currency: string;
   amount: number;
-  category: string;
-  description: string;
-  date: string;
+  icon: string;
+  includeInTotal: boolean;
   createdAt: string;
 }

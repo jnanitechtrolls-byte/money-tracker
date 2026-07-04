@@ -3,7 +3,7 @@
  * Do not edit manually.
  * Api
  * Money Tracker API
- * OpenAPI spec version: 0.2.0
+ * OpenAPI spec version: 0.3.0
  */
 import * as zod from 'zod';
 
@@ -28,7 +28,7 @@ export const ListExpensesQueryParams = zod.object({
 export const ListExpensesResponseItem = zod.object({
   "id": zod.number(),
   "userId": zod.string(),
-  "type": zod.string().describe('expense | income'),
+  "type": zod.string(),
   "amount": zod.number(),
   "category": zod.string(),
   "description": zod.string(),
@@ -45,7 +45,7 @@ export const ListExpensesResponse = zod.array(ListExpensesResponseItem)
 
 
 export const CreateExpenseBody = zod.object({
-  "type": zod.string().optional().describe('expense | income (default: expense)'),
+  "type": zod.string().optional(),
   "amount": zod.number(),
   "category": zod.string().min(1),
   "description": zod.string().optional(),
@@ -55,7 +55,7 @@ export const CreateExpenseBody = zod.object({
 export const CreateExpenseResponse = zod.object({
   "id": zod.number(),
   "userId": zod.string(),
-  "type": zod.string().describe('expense | income'),
+  "type": zod.string(),
   "amount": zod.number(),
   "category": zod.string(),
   "description": zod.string(),
@@ -82,7 +82,7 @@ export const GetExpenseSummaryResponse = zod.object({
   "recentExpenses": zod.array(zod.object({
   "id": zod.number(),
   "userId": zod.string(),
-  "type": zod.string().describe('expense | income'),
+  "type": zod.string(),
   "amount": zod.number(),
   "category": zod.string(),
   "description": zod.string(),
@@ -116,7 +116,7 @@ export const UpdateExpenseBody = zod.object({
 export const UpdateExpenseResponse = zod.object({
   "id": zod.number(),
   "userId": zod.string(),
-  "type": zod.string().describe('expense | income'),
+  "type": zod.string(),
   "amount": zod.number(),
   "category": zod.string(),
   "description": zod.string(),
@@ -133,5 +133,92 @@ export const DeleteExpenseParams = zod.object({
 })
 
 export const DeleteExpenseResponse = zod.void()
+
+
+/**
+ * @summary List accounts for current user
+ */
+export const ListAccountsResponseItem = zod.object({
+  "id": zod.number(),
+  "userId": zod.string(),
+  "name": zod.string(),
+  "type": zod.string(),
+  "currency": zod.string(),
+  "amount": zod.number(),
+  "icon": zod.string(),
+  "includeInTotal": zod.boolean(),
+  "createdAt": zod.string()
+})
+export const ListAccountsResponse = zod.array(ListAccountsResponseItem)
+
+
+/**
+ * @summary Create a new account
+ */
+
+
+
+export const CreateAccountBody = zod.object({
+  "name": zod.string().min(1),
+  "type": zod.string().optional(),
+  "currency": zod.string().optional(),
+  "amount": zod.number().optional(),
+  "icon": zod.string().optional(),
+  "includeInTotal": zod.boolean().optional()
+})
+
+export const CreateAccountResponse = zod.object({
+  "id": zod.number(),
+  "userId": zod.string(),
+  "name": zod.string(),
+  "type": zod.string(),
+  "currency": zod.string(),
+  "amount": zod.number(),
+  "icon": zod.string(),
+  "includeInTotal": zod.boolean(),
+  "createdAt": zod.string()
+})
+
+
+/**
+ * @summary Update an account
+ */
+export const UpdateAccountParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+
+
+
+export const UpdateAccountBody = zod.object({
+  "name": zod.string().min(1),
+  "type": zod.string().optional(),
+  "currency": zod.string().optional(),
+  "amount": zod.number().optional(),
+  "icon": zod.string().optional(),
+  "includeInTotal": zod.boolean().optional()
+})
+
+export const UpdateAccountResponse = zod.object({
+  "id": zod.number(),
+  "userId": zod.string(),
+  "name": zod.string(),
+  "type": zod.string(),
+  "currency": zod.string(),
+  "amount": zod.number(),
+  "icon": zod.string(),
+  "includeInTotal": zod.boolean(),
+  "createdAt": zod.string()
+})
+
+
+/**
+ * @summary Delete an account
+ */
+export const DeleteAccountParams = zod.object({
+  "id": zod.coerce.number()
+})
+
+export const DeleteAccountResponse = zod.void()
 
 

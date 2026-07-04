@@ -3,11 +3,10 @@
  * Do not edit manually.
  * Api
  * Money Tracker API
- * OpenAPI spec version: 0.2.0
+ * OpenAPI spec version: 0.3.0
  */
 
 export interface ExpenseInput {
-  /** expense | income (default: expense) */
   type?: string;
   amount: number;
   /** @minLength 1 */
