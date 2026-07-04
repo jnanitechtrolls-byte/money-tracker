@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { ClerkProvider, SignIn, SignUp, Show, useClerk } from '@clerk/react';
 
-import { dark } from '@clerk/themes';
+import { shadcn } from '@clerk/themes';
 import { Switch, Route, useLocation, Redirect, Router as WouterRouter } from 'wouter';
 import { QueryClient, QueryClientProvider, useQueryClient } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -32,16 +32,20 @@ if (!clerkPubKey) {
 }
 
 const clerkAppearance = {
-  baseTheme: dark,
+  theme: shadcn,
+  cssLayerName: "clerk",
   variables: {
     colorPrimary: "hsl(48 100% 52%)",
-    colorBackground: "#1a1a1a",
-    colorInputBackground: "#2a2a2a",
+    colorForeground: "hsl(0 0% 95%)",
+    colorBackground: "hsl(0 0% 13%)",
+    colorInputBackground: "hsl(0 0% 18%)",
+    colorInputText: "hsl(0 0% 95%)",
     fontFamily: "'Inter', sans-serif",
     borderRadius: "0.75rem",
   },
   elements: {
-    card: "bg-[#1a1a1a] shadow-xl",
+    formFieldInput: "bg-[#222] border border-[#333] text-white",
+    otpCodeFieldInput: "bg-[#222] border border-[#333] text-white !important",
   }
 };
 
