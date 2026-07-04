@@ -152,20 +152,25 @@ router.post("/expenses", requireAuth, async (req: any, res): Promise<void> => {
     return;
   }
 
-  const [expense] = await db
-    .insert(expensesTable)
-    .values({
-      userId,
-      type: (parsed.data as any).type || "expense",
-      amount: String(parsed.data.amount),
-      category: parsed.data.category,
-      description: parsed.data.description || "",
-      authorName: (parsed.data as any).authorName || "",
-      date: parsed.data.date,
-    })
-    .returning();
+  try {
+    const [expense] = await db
+      .insert(expensesTable)
+      .values({
+        userId,
+        type: (parsed.data as any).type || "expense",
+        amount: String(parsed.data.amount),
+        category: parsed.data.category,
+        description: parsed.data.description || "",
+        authorName: (parsed.data as any).authorName || "",
+        date: parsed.data.date,
+      })
+      .returning();
 
-  res.status(201).json(toExpenseJSON(expense));
+    res.status(201).json(toExpenseJSON(expense));
+  } catch (error: any) {
+    console.error("DB Insert Error:", error);
+    res.status(500).json({ error: error.message || "Database insert failed" });
+  }
 });
 
 router.patch("/expenses/:id", requireAuth, async (req: any, res): Promise<void> => {
