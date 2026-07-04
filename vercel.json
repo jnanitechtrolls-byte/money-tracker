@@ -1,4 +1,7 @@
 {
+  "buildCommand": "pnpm install && pnpm run build",
+  "outputDirectory": "artifacts/money-tracker/dist/public",
+  "framework": "vite",
   "rewrites": [
     {
       "source": "/api/(.*)",
